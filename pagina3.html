@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora de Depreciación por Unidades Producidas</title>
+    <!-- Agrega los enlaces a los archivos CSS y JavaScript de Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="styles.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="mb-4">Calculadora de Depreciación por Unidades Producidas</h1>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="costo" class="form-label">Costo Inicial:</label>
+                        <input type="number" class="form-control" id="costo" placeholder="Costo inicial">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="salvamento" class="form-label">Valor de Salvamento:</label>
+                        <input type="number" class="form-control" id="salvamento" placeholder="Valor de Salvamento">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="unidades-producidas" class="form-label">Unidades Producidas:</label>
+                        <input type="number" class="form-control" id="unidades-producidas" placeholder="Unidades producidas">
+                    </div>
+                </div>
+                <label for="numero-anios" class="form-label mt-3">Número de Años:</label>
+                <input type="number" class="form-control" id="numero-anios" placeholder="Número de Años">
+                <button class="btn btn-primary mt-3" onclick="agregarUnidadesPorAnio()">Ingresar Unidades por Año</button>
+                <div id="unidades-anuales"></div>
+                <button class="btn btn-primary mt-3" onclick="calcularDepreciacion()">Calcular Depreciación</button>
+                <h2 class="mt-4">Tabla de Depreciación Anual:</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Año</th>
+                            <th>Unidades Producidas</th>
+                            <th>Depreciación</th>
+                            <th>Depreciación Acumulada</th>
+                            <th>Valor en Libros</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-depreciacion"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let unidadesPorAnio = [];
+
+        function agregarUnidadesPorAnio() {
+            const numeroAnios = parseInt(document.getElementById('numero-anios').value);
+            unidadesPorAnio = [];
+
+            for (let i = 1; i <= numeroAnios; i++) {
+                const unidades = parseInt(prompt(`Unidades producidas en el año ${i}:`));
+                unidadesPorAnio.push(unidades);
+            }
+
+            const unidadesAnualesDiv = document.getElementById('unidades-anuales');
+            unidadesAnualesDiv.innerHTML = '<h3>Unidades Producidas por Año:</h3>';
+            
+            for (let i = 0; i < unidadesPorAnio.length; i++) {
+                unidadesAnualesDiv.innerHTML += `<p>Año ${i + 1}: ${unidadesPorAnio[i]} unidades</p>`;
+            }
+        }
+
+        function calcularDepreciacion() {
+            let costo = parseFloat(document.getElementById('costo').value);
+            const salvamento = parseFloat(document.getElementById('salvamento').value);
+            const numeroAnios = parseInt(document.getElementById('numero-anios').value);
+            const unidadesProducidas = parseInt(document.getElementById('unidades-producidas').value);
+
+            if (!isNaN(costo) && !isNaN(salvamento) && unidadesPorAnio.length === numeroAnios) {
+                const tablaDepreciacion = document.getElementById('tabla-depreciacion');
+                tablaDepreciacion.innerHTML = ''; // Limpiar tabla anterior
+
+                let depreciacionAcumulada = 0;
+                const deprePorUni = (costo - salvamento) / unidadesProducidas;
+
+                for (let i = 0; i < numeroAnios; i++) {
+                    const unidadesProducidas = unidadesPorAnio[i];
+                    const depreciacion = unidadesProducidas * deprePorUni;
+                    depreciacionAcumulada += depreciacion;
+                    const valorEnLibros = costo - depreciacion;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${i + 1}</td>
+                        <td>${unidadesProducidas}</td>
+                        <td>$${depreciacion.toFixed(2)}</td>
+                        <td>$${depreciacionAcumulada.toFixed(2)}</td>
+                        <td>$${valorEnLibros.toFixed(2)}</td>
+                    `;
+                    tablaDepreciacion.appendChild(row);
+                    costo -= depreciacion; // Actualizar el costo para el siguiente año
+                }
+            } else {
+                document.getElementById('tabla-depreciacion').innerHTML = '<tr><td colspan="5">Por favor, ingrese valores válidos y unidades para cada año.</td></tr>';
+            }
+        }
+    </script>
+</body>
+</html>

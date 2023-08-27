@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Depreciación Acelerada Decreciente con Fórmula</title>
+    <!-- Agrega el enlace a los archivos CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos personalizados para el fondo degradado */
+        body {
+            background: linear-gradient(to bottom, #1d91c0, #215973);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        /* Estilos personalizados para el contenedor */
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        /* Estilos personalizados para los botones */
+        .btn-calculadora {
+            font-size: 18px;
+            padding: 10px 20px;
+        }
+        /* Estilos personalizados para la tabla */
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        table thead th {
+            background-color: #1d91c0;
+            color: white;
+        }
+        /* Estilos personalizados para los campos de entrada */
+        .form-control {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Calculadora de Depreciación Acelerada Decreciente con Fórmula</h1>
+        <form id="formularioDepreciacion">
+            <div class="form-group">
+                <label for="nombreActivo">Nombre del Activo:</label>
+                <input type="text" class="form-control" id="nombreActivo" required>
+            </div>
+            <div class="form-group">
+                <label for="modeloSerie">Modelo/Serie:</label>
+                <input type="text" class="form-control" id="modeloSerie" required>
+            </div>
+            <div class="form-group">
+                <label for="valorInicial">Costo del Activo:</label>
+                <input type="number" class="form-control" id="valorInicial" required>
+            </div>
+            <div class="form-group">
+                <label for="valorRecuperable">Valor Recuperable:</label>
+                <input type="number" class="form-control" id="valorRecuperable" required>
+            </div>
+            <div class="form-group">
+                <label for="vidaUtil">Vida Útil (años):</label>
+                <input type="number" class="form-control" id="vidaUtil" required>
+            </div>
+            <button type="button" class="btn btn-primary btn-calculadora" onclick="calcularDepreciacion()">Calcular Depreciación</button>
+        </form>
+        <div id="resultados"></div>
+    </div>
+
+    <!-- Agrega el enlace a los archivos JavaScript de Bootstrap (jQuery y Popper.js son requeridos) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Script JavaScript para calcular la depreciación acelerada decreciente con fórmula -->
+    <script>
+        function calcularDepreciacion() {
+            const nombreActivo = document.getElementById("nombreActivo").value;
+            const modeloSerie = document.getElementById("modeloSerie").value;
+            const costoActivo = parseFloat(document.getElementById("valorInicial").value);
+            const valorRecuperable = parseFloat(document.getElementById("valorRecuperable").value);
+            const vidaUtil = parseInt(document.getElementById("vidaUtil").value);
+
+            let tablaResultados = `<h2 class="mt-4">Tabla de Depreciación Acelerada Decreciente para ${nombreActivo} (${modeloSerie})</h2>`;
+            tablaResultados += '<table class="table table-striped table-bordered"><thead><tr><th>Año</th><th>Tasa de Depreciación</th><th>Depreciación Anual</th><th>Depreciación Acumulada</th><th>Valor en Libros</th></tr></thead><tbody>';
+
+            let depreciacionAcumulada = 0;
+
+            for (let año = 1; año <= vidaUtil; año++) {
+                const tasaDepreciacion = 1 - Math.pow(valorRecuperable / costoActivo, 1 / vidaUtil);
+                const depreciacionAnual = tasaDepreciacion * (costoActivo - depreciacionAcumulada);
+                depreciacionAcumulada += depreciacionAnual;
+                const valorEnLibros = costoActivo - depreciacionAcumulada;
+                tablaResultados += `<tr><td>${año}</td><td>${(tasaDepreciacion * 100).toFixed(2)}%</td><td>$${depreciacionAnual.toFixed(2)}</td><td>$${depreciacionAcumulada.toFixed(2)}</td><td>$${valorEnLibros.toFixed(2)}</td></tr>`;
+            }
+
+            tablaResultados += '</tbody></table>';
+
+            document.getElementById("resultados").innerHTML = tablaResultados;
+        }
+    </script>
+</body>
+</html>

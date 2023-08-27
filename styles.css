@@ -1,0 +1,61 @@
+body {
+    background: linear-gradient(to bottom, #4e8daa, #163e94);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.btn-selector {
+    margin: 10px;
+    padding: 10px;
+    font-size: 24px;
+    border-radius: 30px;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+}
+
+.btn-equal-width {
+    width: 100%;
+}
+
+.container-background {
+    background: linear-gradient(to bottom, #4e8daa, #163e94);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+.container-background {
+    background: linear-gradient(to bottom, #4e8daa, #163e94);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+
+.logo {
+    /* Estilo para el logotipo */
+    width: 200px; /* Cambia este valor según tu preferencia */
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Otros estilos que puedas tener en tu CSS */
+
+
+/* Estilos personalizados para la tarjeta */
+.card {
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+    padding: 40px;
+}
+
+/* Agrega aquí más estilos compartidos si es necesario */
